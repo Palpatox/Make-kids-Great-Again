@@ -19,10 +19,16 @@
         </style>
     </head>
     <body>
-        <button id="start">Start Game</button>
-        <div id="game"></div>
-        <div>Score: <span id="score">0</span></div>
-        <div>Time: <span id="time">0</span></div>
+
+        <h1 style="font-size: 80px; text-align: center;">Red Light Green Light</h1>
+        
+        
+        <div id="game" style="width: 600px; height: 600px; margin: 0 auto;"></div>
+        <button id="start" style="background-color: gray; color: white; font-size: 80px; padding: 20px; display: block; margin: 100px; text-align: center;">Start Game</button>
+        <div style="text-align: center; font-size: 70px;">Score: <span id="score">0</span></div>
+        <div style="text-align: center; font-size: 70px;">Time: <span id="time">0</span></div>
+        
+
         <script>
             let gameStarted = false;
             let shouldFreeze = false;
@@ -65,7 +71,7 @@
             if (window.DeviceMotionEvent) {
                 window.addEventListener('devicemotion', function(event) {
                     if (gameStarted && shouldFreeze) {
-                        if (event.acceleration.x - old_ax > 1.5 || event.acceleration.y - old_ay > 1.5 || event.acceleration.z - old_az > 1.5 || event.rotationRate.alpha - old_gx > 25 || event.rotationRate.beta - old_gy > 25 || event.rotationRate.gamma - old_gz > 25) {
+                        if (Math.abs(event.acceleration.x - old_ax) > 1.5 || Math.abs(event.acceleration.y - old_ay) > 1.5 || Math.abs(event.acceleration.z - old_az) > 1.5 || Math.abs(event.rotationRate.alpha - old_gx) > 25 || Math.abs(event.rotationRate.beta - old_gy) > 25 || Math.abs(event.rotationRate.gamma - old_gz) > 25) {
                             endGame("You moved during a red light!");
                         }
                     } else if (gameStarted && !shouldFreeze) {
@@ -93,7 +99,7 @@
                 shouldFreeze = false;
                 document.getElementById("game").classList.remove("green");
                 document.getElementById("game").classList.add("white");
-                alert(message + " Final score: " + score + ". Time: " + timer + " seconds.");
+                alert(message + " Final score: " + timer + ". Time: " + timer + " seconds.");
             }
         </script>
 </body>

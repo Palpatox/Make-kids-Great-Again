@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, send_file
 import numpy as np
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='templates')
 
 # Initialize a dictionary to store accelerometer data for each client
 client_data_dict = {}
@@ -45,6 +45,16 @@ def accelerometer():
 @app.route('/redgreen')
 def redgreen():
     return render_template('redgreen.html')
+
+@app.route('/mainpage')
+def mainpage():
+    return render_template('mainpage.html')
+
+@app.route('/playpage')
+def playpage():
+    return render_template('playpage.html')
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
