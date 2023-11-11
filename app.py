@@ -13,14 +13,26 @@ def index():
 
 @app.route('/get_result', methods=['GET'])
 def get_result():
-    # Implement logic to process data and generate a result
-    # For example, you can read data from the saved file and perform some computation
-
-    # Replace this with your actual result generation logic
-    result_data = {'result': 'Your result here'}
-
-    # Return the result as JSON
-    return result_data
+    global client_data_dict
+    '''function receive an np.array as an input and returns count,
+    requires import numpy as np, import scipy.signal as sps'''
+    count={}
+    # cleaning the array from Nones
+    for key in client_data_dict:
+        accelerationY=client_data_dict[key]
+        arr = accelerationY[accelerationY != np.array(None)]
+    
+    # min-max normalization
+        xmax = arr.max()
+        xmin = arr.min()
+        arr = (arr - xmin) / (xmax - xmin)
+    
+    # counting the peaks (! basic consideration: refreshing rate = 100 Hertz, thus distance=30 is 0.3 seconds)
+        count[key] = len(sps.find_peaks(arr, height=0.6, distance=30)[0])
+        # client_data_dict[key]=np.array([])
+    # client_data_dict = {}
+    
+    return count
 
 
 
@@ -41,6 +53,10 @@ def accelerometer():
     np.save(filename, client_data_dict[client_ip])
 
     return 'OK'
+
+@app.route('/jump')
+def jump():
+    return render_template('jump.html')
 
 @app.route('/redgreen')
 def redgreen():
