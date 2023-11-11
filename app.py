@@ -55,6 +55,11 @@ def playpage():
     return render_template('playpage.html')
 
 
+@app.route('/createloby')
+def createloby():
+    return render_template('create_loby.html')
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
