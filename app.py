@@ -21,5 +21,9 @@ def accelerometer():
 
     return 'OK'
 
+@app.route('/redgreen')
+def redgreen():
+    return render_template('redgreen.html')
+
 if __name__ == '__main__':
-    app.run(host='10.0.14.51', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
