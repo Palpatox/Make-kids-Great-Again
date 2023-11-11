@@ -17,6 +17,28 @@
         <link href="https://assets-global.website-files.com/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <link href="https://assets-global.website-files.com/img/webclip.png" rel="apple-touch-icon" />
         <script defer="True" src="https://app.opali.xyz/script.js"></script>
+        <style>
+            .list {
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
+            }
+        
+            .list li {
+                padding: 10px;
+                background-color: #f0f0f0;
+                margin-bottom: 10px;
+                border-radius: 5px;
+                font-family: Arial, sans-serif;
+                font-size: 18px;
+            }
+        
+            .list li:hover {
+                background-color: #e0e0e0;
+            }
+        </style>
+        
+
     </head>
     <body class="body">
         <div class="w-layout-blockcontainer container w-container">
@@ -31,7 +53,7 @@
                 </div>
             </section>
             <div class="w-layout-blockcontainer container-4 w-container">
-                <div class="text-block" id="info-text">Information about any of the three button info other there</div>
+                <div class="text-block" style="display:block" id="info-text"><h4>Cooming soon</h4></div>
             </div>
 
             <script>
@@ -41,7 +63,7 @@
                 const infoText = document.getElementById('info-text');
 
                 hallOfFameBtn.addEventListener('click', () => {
-                    infoText.textContent = 'Hall of Fame';
+                    infoText.innerHTML = '<h4>Cooming soon</h4>';
                 });
 
                 newsBtn.addEventListener('click', () => {
