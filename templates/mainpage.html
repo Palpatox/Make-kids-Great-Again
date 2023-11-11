@@ -24,9 +24,36 @@
             <div class="w-layout-blockcontainer container-6 w-container"><h1 class="heading">Jumppeli</h1></div>
             <section class="section"><a class="button-3 w-button" href="/playpage">PLAY</a></section>
             <section>
-                <div class="w-layout-blockcontainer container-2 w-container"><a class="button-5 w-button" href="#">Hall of Fame</a><a class="button-6 w-button" href="#">News</a><a class="button-7 w-button" href="#">Friends</a></div>
+                <div class="w-layout-blockcontainer container-2 w-container">
+                    <a class="button-5 w-button" href="#" id="hall-of-fame-btn">Hall of Fame</a>
+                    <a class="button-6 w-button" href="#" id="news-btn">News</a>
+                    <a class="button-7 w-button" href="#" id="friends-btn">Friends</a>
+                </div>
             </section>
-            <div class="w-layout-blockcontainer container-4 w-container"><div class="text-block">Information about any of the three button info other there</div></div>
+            <div class="w-layout-blockcontainer container-4 w-container">
+                <div class="text-block" id="info-text">Information about any of the three button info other there</div>
+            </div>
+
+            <script>
+                const hallOfFameBtn = document.getElementById('hall-of-fame-btn');
+                const newsBtn = document.getElementById('news-btn');
+                const friendsBtn = document.getElementById('friends-btn');
+                const infoText = document.getElementById('info-text');
+
+                hallOfFameBtn.addEventListener('click', () => {
+                    infoText.textContent = 'Hall of Fame';
+                });
+
+                newsBtn.addEventListener('click', () => {
+                    infoText.innerHTML = '<h4>Most downloaded games</h4> <br> <ul class="list" role="list"><li>Jump rope</li><li>‍Red light green light</li></ul>';
+                });
+
+                friendsBtn.addEventListener('click', () => {
+                    infoText.innerHTML = "<ul class=\"list\" role=\"list\"><li>Alexey</li><li>‍Sofia</li><li>Ralf‍</li></ul>";
+                });
+            </script>
+
+          
         </div>
         <script
             crossorigin="anonymous"
