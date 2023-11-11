@@ -8,12 +8,24 @@
 <body>
 
 <script>
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', function(event) {
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', function(event) {
             var data = {
-                alpha: event.alpha,
-                beta: event.beta,
-                gamma: event.gamma
+                acceleration: {
+                    x: event.acceleration.x,
+                    y: event.acceleration.y,
+                    z: event.acceleration.z
+                },
+                accelerationIncludingGravity: {
+                    x: event.accelerationIncludingGravity.x,
+                    y: event.accelerationIncludingGravity.y,
+                    z: event.accelerationIncludingGravity.z
+                },
+                rotationRate: {
+                    alpha: event.rotationRate.alpha,
+                    beta: event.rotationRate.beta,
+                    gamma: event.rotationRate.gamma
+                }
             };
 
             fetch('/accelerometer', {
@@ -25,7 +37,7 @@
             });
         });
     } else {
-        alert("DeviceOrientation is not supported on this device.");
+        alert("DeviceMotion is not supported on this device.");
     }
 </script>
 
