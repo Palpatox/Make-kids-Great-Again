@@ -6,10 +6,14 @@ app = Flask(__name__, template_folder='templates', static_folder='templates')
 # Initialize a dictionary to store accelerometer data for each client
 client_data_dict = {}
 
+client_role_dict = {}
+
+jump_results = {}
+# Initialize an array of available roles
+available_roles = ['Player1', 'Player2','Player3','Player4','Player5']
 @app.route('/')
 def index():
-    return render_template('index.html')
-
+    return render_template('mainpage.html')
 
 @app.route('/reset_jump', methods=['POST'])
 def reset_jump():
@@ -36,10 +40,13 @@ def get_result():
     
     # counting the peaks (! basic consideration: refreshing rate = 100 Hertz, thus distance=30 is 0.3 seconds)
         count[key] = len(sps.find_peaks(arr, height=0.6, distance=30)[0])
+        print(client_role_dict[key])
+        jump_results[client_role_dict[key]]= len(sps.find_peaks(arr, height=0.6, distance=30)[0])
+
         # client_data_dict[key]=np.array([])
     # client_data_dict = {}
     
-    return count
+    return jump_results
 
 
 
@@ -62,7 +69,21 @@ def accelerometer():
     return 'OK'
 
 
+@app.route('/assign_role', methods=['GET'])
+def assign_role():
+    client_ip = request.remote_addr
 
+    if client_ip not in client_role_dict:
+        if available_roles:
+            assigned_role = available_roles.pop(0)
+            print('inside roler', assigned_role)
+            client_role_dict[client_ip]=assigned_role
+            
+            return f'Your role: {assigned_role}'
+    else:
+        return f'Your role: {client_role_dict[client_ip]}'
+
+    return 'OK'
 
 
 @app.route('/jump')
