@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accelerometer Demo</title>
+</head>
+<body>
+
+<script>
+    if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', function(event) {
+            var data = {
+                alpha: event.alpha,
+                beta: event.beta,
+                gamma: event.gamma
+            };
+
+            fetch('/accelerometer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+        });
+    } else {
+        alert("DeviceOrientation is not supported on this device.");
+    }
+</script>
+
+</body>
+</html>
