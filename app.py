@@ -11,6 +11,13 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/reset_jump', methods=['POST'])
+def reset_jump():
+    print('restartred')
+    client_ip = request.remote_addr
+    client_data_dict[client_ip] = np.array([])
+
+
 @app.route('/get_result', methods=['GET'])
 def get_result():
     global client_data_dict
@@ -40,7 +47,7 @@ def get_result():
 def accelerometer():
     data = request.json
     client_ip = request.remote_addr
-    print("Accelerometer data received:", data['accelerationIncludingGravity']['y'], client_ip)
+    # print("Accelerometer data received:", data['accelerationIncludingGravity']['y'], client_ip)
 
     # Check if the client already has an array, if not, initialize one
     if client_ip not in client_data_dict:
@@ -53,6 +60,10 @@ def accelerometer():
     np.save(filename, client_data_dict[client_ip])
 
     return 'OK'
+
+
+
+
 
 @app.route('/jump')
 def jump():
