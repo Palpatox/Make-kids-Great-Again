@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>Red Light Green Light</title>
+        <style>
+            #game {
+                width: 100px;
+                height: 100px;
+                background-color: red;
+            }
+            #game.green {
+                background-color: green;
+            }
+
+            #game.white {
+                background-color: white;
+            }
+        </style>
+    </head>
+    <body>
+
+        <h1 style="font-size: 80px; text-align: center;">Red Light Green Light</h1>
+        
+        
+        <div id="game" style="width: 600px; height: 600px; margin: 0 auto;"></div>
+        <button id="start" style="background-color: gray; color: white; font-size: 80px; padding: 20px; display: block; margin: 100px; text-align: center;">Start Game</button>
+        <div style="text-align: center; font-size: 70px;">Score: <span id="score">0</span></div>
+        <div style="text-align: center; font-size: 70px;">Time: <span id="time">0</span></div>
+        
+
+        <script>
+            let gameStarted = false;
+            let shouldFreeze = false;
+            let gameInterval;
+            let score = 0;
+            let timer = 0;
+
+
+            //old values
+            let old_az = 0;
+            let old_ay = 0;
+            let old_ax = 0;
+            let old_gz = 0;
+            let old_gy = 0;
+            let old_gx = 0;
+
+            const scoreDisplay = document.getElementById("score");
+            const timeDisplay = document.getElementById("time");
+
+            document.getElementById("start").addEventListener("click", function() {
+                gameStarted = true;
+                score = 0;
+                timer = 0;
+                startGame();
+            });
+            document.getElementById("game").classList.add("white");
+            function startGame() {
+                document.getElementById("game").classList.remove("white");
+                gameInterval = setInterval(function() {
+                    let digit = Math.floor((timer % 100) / 10);
+                    shouldFreeze = digit % 2 === 1;
+                    document.getElementById("game").classList.toggle("green", !shouldFreeze);
+                    timer++;
+                    timeDisplay.innerText = timer;
+                    scoreDisplay.innerText = timer;
+                }, 1000);
+                scoreDisplay.innerText = score;
+            }
+
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', function(event) {
+                    if (gameStarted && shouldFreeze) {
+                        if (Math.abs(event.acceleration.x - old_ax) > 1.5 || Math.abs(event.acceleration.y - old_ay) > 1.5 || Math.abs(event.acceleration.z - old_az) > 1.5 || Math.abs(event.rotationRate.alpha - old_gx) > 25 || Math.abs(event.rotationRate.beta - old_gy) > 25 || Math.abs(event.rotationRate.gamma - old_gz) > 25) {
+                            endGame("You moved during a red light!");
+                        }
+                    } else if (gameStarted && !shouldFreeze) {
+                        //score++;
+                        scoreDisplay.innerText = timer;
+                        //shouldFreeze = true;
+                        //setTimeout(function() {
+                          //  document.getElementById("game").classList.remove("green");
+                        //}, 2000);
+                    }
+                    old_ax = event.acceleration.x;
+                    old_ay = event.acceleration.y;
+                    old_az = event.acceleration.z;
+                    old_gx = event.rotationRate.alpha;
+                    old_gy = event.rotationRate.beta;
+                    old_gz = event.rotationRate.gamma;
+                });
+            } else {
+                alert("DeviceMotion is not supported on this device.");
+            }
+
+            function endGame(message) {
+                clearInterval(gameInterval);
+                gameStarted = false;
+                shouldFreeze = false;
+                document.getElementById("game").classList.remove("green");
+                document.getElementById("game").classList.add("white");
+                alert(message + " Final score: " + timer + ". Time: " + timer + " seconds.");
+            }
+        </script>
+</body>
+</html>
