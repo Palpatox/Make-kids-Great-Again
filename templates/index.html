@@ -7,37 +7,75 @@
 </head>
 <body>
 
-<script>
-    if (window.DeviceMotionEvent) {
-        window.addEventListener('devicemotion', function(event) {
-            var data = {
-                acceleration: {
-                    x: event.acceleration.x,
-                    y: event.acceleration.y,
-                    z: event.acceleration.z
-                },
-                accelerationIncludingGravity: {
-                    x: event.accelerationIncludingGravity.x,
-                    y: event.accelerationIncludingGravity.y,
-                    z: event.accelerationIncludingGravity.z
-                },
-                rotationRate: {
-                    alpha: event.rotationRate.alpha,
-                    beta: event.rotationRate.beta,
-                    gamma: event.rotationRate.gamma
-                }
-            };
+<button id="startButton">Start</button>
 
-            fetch('/accelerometer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+<script>
+    let isRecording = false;
+
+    document.getElementById('startButton').addEventListener('click', function () {
+        isRecording = true;
+        setTimeout(stopRecording, 30000); // Stop recording after 30 seconds
+    });
+    document.getElementById('getResultButton').addEventListener('click', function () {
+        // Call a function to get result when the button is clicked
+        getResult();
+    });
+
+    function stopRecording() {
+        isRecording = false;
+        alert('Recording stopped.');
+    }
+
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', function (event) {
+            if (isRecording) {
+                var data = {
+                    acceleration: {
+                        x: event.acceleration.x,
+                        y: event.acceleration.y,
+                        z: event.acceleration.z
+                    },
+                    accelerationIncludingGravity: {
+                        x: event.accelerationIncludingGravity.x,
+                        y: event.accelerationIncludingGravity.y,
+                        z: event.accelerationIncludingGravity.z
+                    },
+                    rotationRate: {
+                        alpha: event.rotationRate.alpha,
+                        beta: event.rotationRate.beta,
+                        gamma: event.rotationRate.gamma
+                    }
+                };
+
+                fetch('/accelerometer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+            }
         });
     } else {
         alert("DeviceMotion is not supported on this device.");
+    }
+
+    function getResult() {
+        // You can add logic here to fetch the result from the server
+        fetch('/get_result', {
+            method: 'GET',
+        }).then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to get result');
+            }
+        }).then(result => {
+            // Handle the result as needed
+            console.log('Result:', result);
+        }).catch(error => {
+            console.error('Error:', error.message);
+        });
     }
 </script>
 
