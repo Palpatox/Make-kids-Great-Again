@@ -1,4 +1,4 @@
-# Import necessary modules from Flask for web application development
+# Import necessary modules for application development
 from flask import Blueprint, render_template, request, send_file
 import numpy as np
 import scipy.signal as sps
@@ -12,12 +12,12 @@ client_role_dict = {}    # Dictionary to store assigned roles for each client
 jump_results = {}        # Dictionary to store jump results for each role
 available_roles = ['Player1', 'Player2', 'Player3', 'Player4', 'Player5']  # Array of available roles
 
-# Define a route that renders the main page for the 'jump' game module
+# Define a route that renders the main page for the 'Rope Jumping' game
 @jump_blueprint.route('/')
 def jump_index():
     return render_template('jump.html')
 
-# Define a route that resets the 'jump' game state
+# Define a route that resets the game state
 @jump_blueprint.route('/reset_jump', methods=['POST'])
 def reset_jump():
     print('restarted')
